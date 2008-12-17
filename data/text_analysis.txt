@@ -1,0 +1,119 @@
+$('input[name=del]').parent().html();
+
+"<input name="del" value="5673" type="checkbox">5673．<b>神戸にて、ぱしふぃっくびいなすと飛鳥Ⅱ</b>"
+
+$('input[name=del]').parent().parent().parent().parent().parent().parent().parent().html();
+
+<tr> 
+  <td bgcolor="#99bbff"> 
+    <table cellpadding="0" cellspacing="0" width="100%"> 
+     <tbody>
+      <tr> 
+        <td>
+          <input name="del" value="5673" type="checkbox">5673．<b>神戸にて、ぱしふぃっくびいなすと飛鳥Ⅱ</b>
+        </td& gt; 
+        <td align="right">
+          <a href="/cgi/reply?id=fujiwara&amp;dd=33&amp;re=5673">返信</a& gt; &nbsp;
+          <a href="/cgi/reply?id=fujiwara&amp;dd=33&amp;re=5673&amp; qu=1">引用</a>&nbsp;
+        </td> 
+      </tr> 
+     </tbody>
+    </table> 
+  </td> 
+</tr> 
+<tr>
+  <td bgcolor="#ccddff">名前：<b>まゆき</b> &nbsp;&nbsp; 日付：12月14日(日) 22時16分</td>
+</tr> 
+<tr> 
+  <td bgcolor="#ffffff"> 
+  <table cellpadding="12" width="100%"> 
+   <tbody>
+    <tr> 
+      <td> 
+        <a href="/33/fujiwara/img/1229260580_1.jpg" target="_blank">
+          <img src="/33/fujiwara/img/1229260580_1s.jpg" alt="Original Size: 640 x 480, 80KB" border="1" height="180" width="240"></a><wbr> 
+        <a href="/33/fujiwara/img/1229260580_2.jpg" target="_blank">
+          <img src="/33/fujiwara/img/1229260580_2s.jpg" alt="Original Size: 640 x 480, 81KB" border="1" height="180" width="240"></a><wbr> 
+        <a href="/33/fujiwara/img/1229260580_3.jpg" target="_blank">
+          <img src="/33/fujiwara/img/1229260580_3s.jpg" alt="Original Size: 640 x 480, 70KB" border="1" height="180" width="240"></a>
+          <wbr> <p>藤原さん、みえこさん、皆様こんばんは<br><br>
+          昨日、関西方面に出かけておりましたので、ちょっと足を伸ばして、神戸港にてクリスマスクルーズに出港するため停泊中の、ぱしふぃっくびいなすと飛鳥Ⅱを見てきました。<br><br>
+          ①まず、ポートターミナルから中突堤を見た写真です。ちょうど、オリエンタルホテルの向こうに停泊している飛鳥Ⅱのおしりが見えたのですが、ホテルと飛鳥Ⅱの後部のカーブが同じ傾斜に見えましたので、面白いなと思い写真を撮りました。<br>
+          ② ドック明けで、いつもにも増して白さが際立つぱしふぃっくびいなすです。ダイニングの窓にはポインセチアの鉢が見えました。<br>
+          ③飛鳥Ⅱ とオリエンタルホテルのツーショット。<br><br
+          >
+          昨日はどちらの船も午後5時の出港予定でしたね。時間の都合で出向風景は見ることが出来ませんでしたが、夕暮れ時の神戸港からの出港は、さぞや美しかったろうにと残念です。 <br> 
+          <a href="http://fuzzy727.blog28.fc2.com/" target="_blank">http://fuzzy727.blog28.fc2.com/</a> 
+        </p>
+        </td> 
+      </tr> 
+    </tbody>
+  </table> 
+  </td> 
+</tr>
+
+
+or
+
+
+<tr> 
+  <td bgcolor="#99bbff"> 
+  <table cellpadding="0" cellspacing="0" width="100%"> 
+    <tbody>
+      <tr> 
+        <td>
+          <input name="del" value="5630" type="checkbox">5630．<b>カーニバル「レジェンド」</b>
+        </td> 
+        <td align="right"><a href="/cgi/reply?id=fujiwara&amp;dd=33&amp;re=5630">返信</a& gt; &nbsp;<a href="/cgi/reply?id=fujiwara&amp;dd=33&amp;re=5630&amp; qu=1">引用</a>&nbsp;
+        </td> 
+      </tr> 
+    </tbody>
+  </table> 
+  </td> 
+</tr>
+<tr>
+  <td bgcolor="#ccddff">名前：<b>いちごおじさん</b> &nbsp;&nbsp; 日付：12月12日(金) 11時49分
+  </td>
+</tr> 
+<tr> 
+  <td bgcolor="#ffffff"> 
+    <table cellpadding="12" width="100%"> 
+      <tbody>
+        <tr> 
+          <td> 藤原様<br><br>はじめまして。<br>
+            いつも貴ホームページを楽しく拝見させて頂いるカナダ在住の者です。<br>
+            昨年、初めてクルーズを体験し、大好きになりました。<br>
+            今年は、行けなかったのですが来年からは、また行きたいと思っております。<br> 
+            簡単な旅行記ではありますが、カーニバル乗船の際のブログがありますので、是非紹介させて下さい。<br>
+            宜しければ、貴ホームページにリンクして頂ければ幸いです。<br>
+            ブログ：http://ameblo.jp /funship/entrylist.html<br>写真集：http://picasaweb.google.com /tak2007<br><br>それでは、また、遊びにまいります。 <br> 
+            <a href="http://ameblo.jp/funship/entrylist.html" target="_blank">http://ameblo.jp/funship/entrylist.html</a> <p> </p><hr color="" size="1" width="87%"> 
+            
+            <table cellpadding="3" cellspacing="0" width="100%"> 
+              <tbody>
+                <tr> 
+                  <td rowspan="3" width="32"><br></td> 
+                  <td><input name="del" value="5631" type="checkbox">5631．<b>Re: カーニバル「レジェンド」</b></td> 
+                </tr> 
+                <tr> 
+                  <td>名前：<b>藤原雄一郎</b> &nbsp;&nbsp; 日付：12月12日(金) 13時16分</td> 
+                </tr> 
+                <tr> 
+                  <td> <font color="#008080">いちごおじさん <br><br>
+                    カナダからようこそ！<br>
+                    カナダだと数多くのクルーズを楽しむことができてうらやましいですね。世界的な景気後退がカナダ・アメリカにどのように影響（クルーズに）しているのかなども教えてください。<br><br>
+                    リンクの件は検討します。しばらく時間をください。</font> <br> <a href="http://inox-tabi.com/cruise/promo/amz/index.html" target="_blank">
+                      http://inox-tabi.com/cruise/promo/amz/index.html</a> 
+                  </td> 
+                </tr> 
+              </tbody>
+            </table> 
+            <hr color="" size="1" width="87%"> 
+            <table cellpadding="3" cellspacing="0" width="100%"> <tbody><tr> <td rowspan="3" width="32"><br></td> <td><input name="del" value="5635" type="checkbox">5635．<b>Re: カーニバル「レジェンド」</b></td> </tr> <tr> <td>名前：<b>いちごおじさん</b> &nbsp;&nbsp; 日付：12月13日(土) 1時2分</td> </tr> <tr> <td> 藤原様<br><br>お返事ありがとうございます。<br>実は旅行業に従事しておりますが、クルーズではありませんが、１１月、１２月の日本からカナダへの旅行者は、エアラインの燃油費が高いのもあり、円高傾向になったものの例年と比べると激減し、インバウンド旅行業は瀕死の状態と言っていい状態です。<br>クルーズのように航空会社の燃油費もいち早く撤廃して欲しいと感じています。 <br> <a href="http://ameblo.jp/funship/entrylist.html%20" target="_blank">http://ameblo.jp/funship/entrylist.html </a> </td> </tr> </tbody></table> <hr color="" size="1" width="87%"> <table cellpadding="3" cellspacing="0" width="100%"> <tbody><tr> <td rowspan="3" width="32"><br></td> <td><input name="del" value="5639" type="checkbox">5639．<b>Re: カーニバル「レジェンド」</b></td> </tr> <tr> <td>名前：<b>藤原雄一郎</b> &nbsp;&nbsp; 日付：12月13日(土) 11時58分</td> </tr> <tr> <td> <font color="#008080">いちごおじさん<br><br>旅行業の関係者は大歓迎です。１０月からサーチャージが法外な増加で旅行業の人たちは大変だったと思います。<br><br>いちごおじさんもクルーズを販売されてはいかがですか。ご自身で旅行業を営んでおられるのですか？<br><br>航空機のサーチャージ情報など、ホットな情報を期待しています。</font> </td> </tr> </tbody></table> </td> </tr> </tbody>
+  </table> 
+  </td> 
+</tr> 
+
+
+
+

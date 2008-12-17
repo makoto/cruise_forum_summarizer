@@ -1,0 +1,47 @@
+# Fetching url
+
+* Keep fetching page by incrementing p=1 number until each thread does not include topic during the specified month
+* Keep fetching until end of pages
+* Ignore topic which is younger than specified month
+
+$('td').text().search(/日付：12月/)
+
+# Analyzing thread
+
+* Extract each topic
+var thread = $('input[name=del]').parent(':not(:contains("Re"))').parent().parent().parent().parent().parent().parent()
+
+thread[2].innerHTML
+
+## Analyzing each topic
+
+
+* Thread ID & Title
+$('input[name=del]').parent(':not(:contains("Re"))').text();
+* Post Date
+
+var thread = $('input[name=del]').parent(':not(:contains("Re"))').parent().parent().parent().parent().parent().parent()
+thread.html().match(/日付：12月\d{1,2}日/)
+
+
+
+* Post User Name
+var thread = $('input[name=del]').parent(':not(:contains("Re"))').parent().parent().parent().parent().parent().parent()
+thread.html().match(/名前：.* 日付/)[0].replace(/名前：/,"").replace(/ *日付/,"")
+
+* Number of replies
+* Who replied
+* Last reply Date
+var thread = $('input[name=del]').parent(':not(:contains("Re"))').parent().parent().parent().parent().parent().parent()
+thread.html().match(/日付：12月\d{1,2}日/g).pop()
+
+
+:thread
+ :id
+ :title
+ :date
+ :user
+ :replies
+  :id
+  :date
+  :user
