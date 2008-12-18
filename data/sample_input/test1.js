@@ -1,8 +1,8 @@
 $(document).ready(function(){
- var threads = {}
- $("#result").append("<table border=1><tr><th>投稿番号</th><th>投稿者</th><th>タイトル</th><th>参加者</th><th>コメント数</th></tr>")
 
-threads = $("table[width='90%']").map(
+$("#result").append("<table border=1><tr><th>投稿番号</th><th>投稿者</th><th>タイトル</th><th>参加者</th><th>コメント数</th></tr>")
+
+$("table[width='90%']").each(
 
  function(){fetch_threads(this)}
 )
@@ -30,18 +30,18 @@ function fetch_threads(obj){
  thread.date = $(obj).find("td:contains(" + hizuke + ")").html().match(matching_condition)[1]
  thread.user =  $(obj).find("td:contains(" + hizuke + ")").children('b').get(0).innerHTML
 
-  var replies = {}
-  $(obj).find('input[name=del]').parent(':contains("Re")').each(
+  var replies = $(obj).find('input[name=del]').parent(':contains("Re")').map(
    function(){
      //console.log($(this).html());  
 
 
      var reply = {}
-     var reply_id = $(this).children(':first-child').val();
      var reply_tag = $(this).parent().next().children(':first-child')
+
+     reply.id = $(this).children(':first-child').val();
      reply.date = reply_tag.html().match(matching_condition)[1]
-    reply.user = reply_tag.children('b').get(0).innerHTML
-    replies[reply_id] = reply
+     reply.user = reply_tag.children('b').get(0).innerHTML
+     return reply
    }
   )
   thread.replies = replies
@@ -56,8 +56,32 @@ function fetch_threads(obj){
 
 
 function display_object (obj) {
- return  "<tr><td>"+ obj.id + "</td><td>"+ obj.user + "</td><td><a href='http://www3.ezbbs.net/cgi/reply?id=fujiwara&dd=33&re=" + obj.id + "' >" + obj.title + "</a></td></tr>"
- 
+
+var user = {}
+$.each(obj.replies,
+function(){
+ if (user[this.user] == undefined )
+ 	{return user[this.user] = 1 }
+ else
+ 	{return user[this.user] = user[this.user] + 1}
+}
+)
+var commentors = []
+console.log(user);
+for (u in user)
+{
+ if (u != obj.user)
+  {commentors.push(u)}
+}
+console.log(commentors);
+
+//for (var i = obj.replies.length - 1; i >= 0; i--){
+//  console.log(obj.replies[i].user)
+//};
+
+// var aaa = obj.replies.map{function(){return this.user}}
+// console.log(aaa)
+ return  "<tr><td>"+ obj.id + "</td><td>"+ obj.user + "</td><td><a href='http://www3.ezbbs.net/cgi/reply?id=fujiwara&dd=33&re=" + obj.id + "' >" + obj.title + "</a></td><td>" + commentors + "</td><td>" + obj.replies.length + "</td></tr>"
 }
 
 function display_object_org (obj) {
