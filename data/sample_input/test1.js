@@ -1,8 +1,12 @@
 $(document).ready(function(){
  var threads = {}
+ $("#result").append("<table border=1><tr><th>投稿番号</th><th>投稿者</th><th>タイトル</th><th>参加者</th><th>コメント数</th></tr>")
+
 threads = $("table[width='90%']").map(
+
  function(){fetch_threads(this)}
 )
+ $("#result").append("</table>")    
  alert (1);
  $("#result").append("<br>");
  //display_object(threads);
@@ -10,10 +14,10 @@ threads = $("table[width='90%']").map(
 )
 
 function fetch_threads(obj){
-  var threads = {}
+  var threads = []
   var thread = {}
   
-  var id = $(obj).find('input[name=del]').val()
+  thread.id = $(obj).find('input[name=del]').val()
   thread.title =  $(obj).find('input[name=del]').parent(':not(:contains("Re"))').children('b').text()
   var hizuke = '日付'
   var hizuke_collong = ''
@@ -41,14 +45,22 @@ function fetch_threads(obj){
    }
   )
   thread.replies = replies
-  threads[id] = thread
-  display_object(threads);
-  return threads
+  //threads[id] = thread
+   
+  summary_table = display_object(thread);
+  $("#result").append(summary_table)      
+
+  return thread
 }
 
 
 
 function display_object (obj) {
+ return  "<tr><td>"+ obj.id + "</td><td>"+ obj.user + "</td><td><a href='http://www3.ezbbs.net/cgi/reply?id=fujiwara&dd=33&re=" + obj.id + "' >" + obj.title + "</a></td></tr>"
+ 
+}
+
+function display_object_org (obj) {
  	for (t in obj)
  	{
  	  {$("#result").append(t +  "<br>")}      
