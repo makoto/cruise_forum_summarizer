@@ -2,7 +2,7 @@ $('input[name=del]').parent().html();
 
 "<input name="del" value="5673" type="checkbox">5673．<b>神戸にて、ぱしふぃっくびいなすと飛鳥Ⅱ</b>"
 
-$('input[name=del]').parent().parent().parent().parent().parent().parent().parent().html();
+$('input[name=del]').parent().parent().parent().parent().parent().parent().parent().parent().html();
 
 <tr> 
   <td bgcolor="#99bbff"> 
