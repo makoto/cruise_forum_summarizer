@@ -160,4 +160,21 @@ describe "KeijiParser" do
   #   #   thread.search('input[@name=del]').first.attributes['value'].should == "5665"
   #   # end
   # end
+  
+  describe JPDateParser do
+    before(:each) do
+    end
+    it "should parse" do
+      JPDateParser.parse("12月27日(土) 10時31分").to_s.should == "Sat Dec 27 10:31:00 +0000 2008"
+    end
+    it "should parse 2" do
+      JPDateParser.parse("12月27日(土) 1時3分").to_s.should == "Sat Dec 27 01:03:00 +0000 2008"
+    end
+    
+    it "should handle year" do
+      Time.stub!(:now).and_return(Time.parse('2009/1/10'))
+      JPDateParser.parse("1月2日(土) 1時3分").to_s.should == "Fri Jan 02 01:03:00 +0000 2009"
+    end
+  end
+  
 end
