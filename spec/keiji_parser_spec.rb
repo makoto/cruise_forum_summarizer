@@ -60,14 +60,6 @@ describe "KeijiParser" do
                 </tr>
                 </tbody>
               </table>
-      
-              <table cellpadding="3" cellspacing="0" width="100%">
-              <tbody>
-                <tr>
-                  <td rowspan="3" width="32"><br /></td>
-                </tr>
-              </tbody>
-              </table>
             </td>
           </tr>
         </tbody>
@@ -78,6 +70,8 @@ describe "KeijiParser" do
       </table>
     EOF
     @page = Page.new(html)
+    @topic = @page.topics.first
+    @comment = @topic.comments.first
   end
   
   describe Page do
@@ -89,7 +83,6 @@ describe "KeijiParser" do
   
   describe Topic do
     before(:each) do
-      @topic = @page.topics.first
     end
     it "should have id" do
       @topic.thread_id.should == "5960"
@@ -137,10 +130,26 @@ describe "KeijiParser" do
       @topic.comments.size.should == 1
     end
   end
-  
+
   describe Comment do
-    it "should description" do
-      
+    it "should have thread id" do
+      @comment.thread_id.should == "5961"
+    end
+    
+    it "should have thread title" do
+      @comment.title.should == "Re: (untitled)"
+    end
+    
+    it "should have thread user" do
+      @comment.user.should == "hiroshi"
+    end
+
+    it "should have thread date" do
+      @comment.date.should == "1月3日(土) 21時11分"
+    end
+    
+    it "should have thread context" do
+      @comment.context.should == '<font color="#000000">すみません。<br />間違って、別スレを立ててしまいました。<br /><br />ＰＶさんの続きです。</font>'
     end
   end
   # it "should fetch title" do
