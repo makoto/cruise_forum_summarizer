@@ -1,4 +1,5 @@
 $KCODE="UTF8"
+
 require 'spec'
 require 'hpricot'
 require 'lib/keiji_parser'
@@ -69,6 +70,7 @@ describe "KeijiParser" do
       </tbody>
       </table>
     EOF
+    
     @page = Page.new(html)
     @topic = @page.topics.first
     @comment = @topic.comments.first
@@ -117,6 +119,7 @@ describe "KeijiParser" do
       EOF
       ).rstrip
     end
+    
     
     it "should have photo urls" do
       
