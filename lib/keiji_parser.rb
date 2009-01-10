@@ -14,7 +14,7 @@ class Topic
   def initialize(element)
     input = element.search('input[@name=del]').first
     @thread_id = input.attributes['value']
-    @title =  input.parent.inner_text.delete(@thread_id + "．")
+    @title =  NKF.nkf("-w", input.parent.inner_text).delete(@thread_id + "．")
     @user =   NKF.nkf("-w", element.search('tr')[2].inner_text).slice(/名前：(.*) 日付/, 1).gsub(/\?/,"").strip
     @date = NKF.nkf("-w", element.search('tr')[2].inner_text).slice(/日付：(.*$)/, 1)
 
