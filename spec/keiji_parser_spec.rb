@@ -7,6 +7,9 @@ require 'nkf'
 
 describe "KeijiParser" do
   before(:each) do
+    
+    Time.stub!(:now).and_return(Time.parse('2009/1/10'))
+    
     html = <<-EOF
       <table border="2" cellpadding="3" cellspacing="0" width="90%">
       <tbody>
@@ -95,7 +98,8 @@ describe "KeijiParser" do
     end
     
     it "should have date" do
-      @topic.date.should == "1月4日(日) 6時37分"
+      
+      JPDate.generate(@topic.date).should == "2009年01月04日(日) 06時37分"
     end
     
     it "should have name" do
@@ -148,7 +152,7 @@ describe "KeijiParser" do
     end
 
     it "should have thread date" do
-      @comment.date.should == "1月3日(土) 21時11分"
+      JPDate.generate(@comment.date).should == "2009年01月03日(土) 21時11分"
     end
     
     it "should have thread context" do
@@ -161,19 +165,28 @@ describe "KeijiParser" do
   #   # end
   # end
   
-  describe JPDateParser do
+  describe JPDate do
     before(:each) do
     end
-    it "should parse" do
-      JPDateParser.parse("12月27日(土) 10時31分").to_s.should == "Sat Dec 27 10:31:00 +0000 2008"
-    end
-    it "should parse 2" do
-      JPDateParser.parse("12月27日(土) 1時3分").to_s.should == "Sat Dec 27 01:03:00 +0000 2008"
+    
+    describe "parse" do
+      it "should handle 2 digits min and hour" do
+        JPDate.parse("12月27日(土) 10時31分").to_s.should == "Sat Dec 27 10:31:00 +0000 2008"
+      end
+      it "should handle 1 digit min and hour" do
+        JPDate.parse("12月27日(土) 1時3分").to_s.should == "Sat Dec 27 01:03:00 +0000 2008"
+      end
+
+      it "should handle this year" do
+        Time.stub!(:now).and_return(Time.parse('2009/1/10'))
+        JPDate.parse("1月2日(土) 1時3分").to_s.should == "Fri Jan 02 01:03:00 +0000 2009"
+      end
     end
     
-    it "should handle year" do
-      Time.stub!(:now).and_return(Time.parse('2009/1/10'))
-      JPDateParser.parse("1月2日(土) 1時3分").to_s.should == "Fri Jan 02 01:03:00 +0000 2009"
+    describe "generate" do
+      it "should generate dates in Japanese" do
+        JPDate.generate(Time.parse('2009/1/10 13:03')).should == "2009年01月10日(土) 13時03分"
+      end
     end
   end
   

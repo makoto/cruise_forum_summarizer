@@ -3,7 +3,8 @@ require 'hpricot'
 require 'nkf'
 require 'time'
 
-class JPDateParser
+
+class JPDate
   def self.parse(str)
     month = str.slice(/(.*)月(.*)日/, 1)
     day = str.slice(/(.*)月(.*)日/, 2)
@@ -19,6 +20,12 @@ class JPDateParser
       @time = Time.parse("#{year}/#{month}/#{day} #{hour}:#{min}")
     end
     return @time
+  end
+  
+  def self.generate(time)
+    one_week  = ['日','月','火','水','木','金','土']
+    week_day = one_week[time.wday]
+    time.strftime("%Y年%m月%d日(#{week_day}) %H時%M分")
   end
 end
 
@@ -41,7 +48,7 @@ class Message
       @thread_id = input.attributes['value']
       @title =  NKF.nkf("-w", input.parent.inner_text).delete(@thread_id + "．")
       @user =   NKF.nkf("-w", element.search('tr')[@name_and_date_position].inner_text).slice(/名前：(.*) 日付/, 1).gsub(/\?/,"").strip
-      @date = JPDateParser.parse(NKF.nkf("-w", element.search('tr')[@name_and_date_position].inner_text).slice(/日付：(.*$)/, 1))
+      @date = JPDate.parse(NKF.nkf("-w", element.search('tr')[@name_and_date_position].inner_text).slice(/日付：(.*$)/, 1))
     end
   end
 end
