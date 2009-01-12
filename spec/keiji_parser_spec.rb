@@ -97,6 +97,10 @@ describe "KeijiParser" do
       @topic.title.should == "にっぽん丸クリスマスのショウ"
     end
     
+    it "should have url" do
+      @topic.url.should == "/cgi/reply?id=fujiwara&dd=33&re=5960"
+    end
+    
     it "should have date" do
       
       JPDate.generate(@topic.date).should == "2009年01月04日(日) 06時37分"
@@ -163,11 +167,6 @@ describe "KeijiParser" do
       @comment.context.should == '<font color="#000000">すみません。<br />間違って、別スレを立ててしまいました。<br /><br />ＰＶさんの続きです。</font>'
     end
   end
-  # it "should fetch title" do
-  #   # @doc.search('table[@width="90%"]').each do |thread|
-  #   #   thread.search('input[@name=del]').first.attributes['value'].should == "5665"
-  #   # end
-  # end
   
   describe JPDate do
     before(:each) do
@@ -195,9 +194,53 @@ describe "KeijiParser" do
   end
   
   describe "Summary" do
-    it "should display topic name, date, author, number of comments, and last commented date" do
-      
+    
+    describe "Last month" do
+      it "should show ok in Jan" do
+        Time.stub!(:now).and_return(Time.parse('2009/1/10'))
+        Summary.new.last_month.should == "200812"
+      end
+
+      it "should show ok in Feb" do
+        Time.stub!(:now).and_return(Time.parse('2009/2/10'))
+        Summary.new.last_month.should == "200901"
+      end
+
+      it "should show ok in Nov" do
+        Time.stub!(:now).and_return(Time.parse('2009/11/10'))
+        Summary.new.last_month.should == "200910"
+      end
     end
+  end
+  
+  describe "PageCopy" do
+    describe "URL" do
+      it "should change url of reply" do
+        pending
+        "/cgi/reply?id=fujiwara&amp;dd=33&amp;re=5960"
+        SITE + "/cgi/reply?id=fujiwara&amp;dd=33&amp;re=5960"
+      end
+
+      it "should change directory of images" do
+        pending
+        '<a href="/33/fujiwara/img/1230984583_1.jpg" target="_blank">'
+      end
+    end
+    
+    describe "Header" do
+      it "should not have previous page link if this is first page" do
+        
+      end
+      
+      it "should not have next page link if this is last page" do
+        
+      end
+      
+      it "should have next and previous page if it's not first nor last" do
+        
+      end
+    end
+    
   end
   
 end

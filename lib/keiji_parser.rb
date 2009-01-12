@@ -87,7 +87,7 @@ class Photo
 end
 
 class Topic < Message
-  attr_reader :comments
+  attr_reader :comments, :url
 
   def initialize(element)
     @name_and_date_position = 2
@@ -97,6 +97,7 @@ class Topic < Message
     contexts = []
     context_lines.each{|c| break if c.match(/<table/); contexts << c}
     @context = NKF.nkf("-w", contexts.join("\n"))
+    @url = "/cgi/reply?id=fujiwara&dd=33&re=#{thread_id}"
     if @context.empty? # This is because an topic with an icon has extra table
       @context =  NKF.nkf("-w", (element.search('table')[2].search('td')[0..1].inner_html))
     end
@@ -116,4 +117,23 @@ class Comment < Message
       @context = NKF.nkf("-w", element.search('tr')[2].search('td')[0].inner_html).strip
     end
   end
+end
+
+class Summary
+  def initialize
+    @date = Time.now
+  end
+  
+  def this_month
+    @date.strftime("%Y%m")
+  end
+  
+  def last_month
+    if @date.month == 1
+      "#{Time.now.year - 1 }12"
+    else
+      "#{Time.now.year}" + sprintf ("%.2d",(Time.now.month - 1))
+    end
+  end
+  
 end
