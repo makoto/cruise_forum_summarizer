@@ -2,7 +2,11 @@ require 'rubygems'
 require 'hpricot'
 require 'nkf'
 require 'time'
+require 'net/http'
 
+
+SITE = "www3.ezbbs.net"
+OUTDIR = "data/output/"
 
 class JPDate
   def self.parse(str)
@@ -40,7 +44,7 @@ class Page
 end
 
 class Message 
-  attr_reader :thread_id, :title, :date, :user, :context
+  attr_reader :thread_id, :title, :date, :user, :context, :photos
   
   def initialize(element)
     input = element.search('input[@name=del]').first
@@ -49,6 +53,33 @@ class Message
       @title =  NKF.nkf("-w", input.parent.inner_text).delete(@thread_id + "．")
       @user =   NKF.nkf("-w", element.search('tr')[@name_and_date_position].inner_text).slice(/名前：(.*) 日付/, 1).gsub(/\?/,"").strip
       @date = JPDate.parse(NKF.nkf("-w", element.search('tr')[@name_and_date_position].inner_text).slice(/日付：(.*$)/, 1))
+      @photos = element.search('a[@href]').map{|a| a.attributes['href']}.find_all{|a| a.match(/jpg$/)}.map{|a| Photo.new(a)}
+    end
+  end
+end
+
+class Photo
+  attr_reader :url, :thumbnail_url
+  def initialize(url)
+    @site
+    @url = url
+    @thumbnail_url = @url.sub(/.jpg/, "s.jpg")
+  end
+  
+  def fetch
+    p "SITE: #{SITE}"
+    [@url, @thumbnail_url].each do |url|
+      
+      file_path = File.dirname(url)
+      file_name = File.basename(url)
+      unless Dir.glob(OUTDIR + file_name) == [OUTDIR + file_name]
+        Net::HTTP.start(SITE) { |http|
+          resp = http.get(url)
+          open(OUTDIR + file_name, "wb") { |file|
+            file.write(resp.body)
+           }
+        }
+      end
     end
   end
 end
@@ -69,7 +100,6 @@ class Topic < Message
     end
     
     @comments =  element.search('table')[2..-1].map{|comment_element| Comment.new(comment_element)}
-
   end
 end
 

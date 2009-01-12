@@ -124,15 +124,19 @@ describe "KeijiParser" do
       ).rstrip
     end
     
-    
     it "should have photo urls" do
-      
+      @topic.photos.size.should == 2
+      @topic.photos.first.url == "/33/fujiwara/img/1230984583_1.jpg"
     end
     
     it "should have photo thumbnail urls" do
-      
+      @topic.photos.first.thumbnail_url == "/33/fujiwara/img/1230984583_1s.jpg"
     end
-    
+
+    it "should fetch photos" do
+      @topic.photos.first.fetch
+      Dir.glob(OUTDIR + "/1230984583_1.jpg").should == [OUTDIR + "/1230984583_1.jpg"]
+    end
     it "should have comments" do
       @topic.comments.size.should == 1
     end
@@ -187,6 +191,12 @@ describe "KeijiParser" do
       it "should generate dates in Japanese" do
         JPDate.generate(Time.parse('2009/1/10 13:03')).should == "2009年01月10日(土) 13時03分"
       end
+    end
+  end
+  
+  describe "Summary" do
+    it "should display topic name, date, author, number of comments, and last commented date" do
+      
     end
   end
   
