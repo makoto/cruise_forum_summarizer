@@ -28,8 +28,10 @@ class JPDate
   
   def self.generate(time)
     one_week  = ['日','月','火','水','木','金','土']
-    week_day = one_week[time.wday]
-    time.strftime("%Y年%m月%d日(#{week_day}) %H時%M分")
+    if time.respond_to?(:wday)
+      week_day = one_week[time.wday]
+      time.strftime("%Y年%m月%d日(#{week_day}) %H時%M分")
+    end
   end
 end
 
