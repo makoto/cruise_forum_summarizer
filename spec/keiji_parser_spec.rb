@@ -102,7 +102,6 @@ describe "KeijiParser" do
     end
     
     it "should have date" do
-      
       JPDate.generate(@topic.date).should == "2009年01月04日(日) 06時37分"
     end
     
@@ -194,24 +193,63 @@ describe "KeijiParser" do
   end
   
   describe "Summary" do
+    before(:each) do
+      @summary = Summary.new(:date => Date.new(2009,1,10))
+    end
+
+    it "should display summary page name" do
+      @summary.this_month.should == "200901"
+    end
+
+    it "should display previous month page name" do
+      @summary.last_month.should == "200812"
+    end
+
+    it "should display next month if privious month" do
+      Date.stub!(:today).and_return(Date.new(2009, 2, 18))
+      @summary.next_month.should == "200902"
+    end
+
+    it "should not display next month if current month" do
+      Date.stub!(:today).and_return(Date.new(2009, 1, 18))
+      @summary.next_month.should be_nil
+    end
     
-    describe "Last month" do
-      it "should show ok in Jan" do
-        Time.stub!(:now).and_return(Time.parse('2009/1/10'))
-        Summary.new.last_month.should == "200812"
+  end
+  
+    
+    
+    describe "Coverage" do
+      before(:each) do
+        # Time.stub!(:now).and_return(Time.parse('2009/11/10')
+        # @this_month_comment = mock Comment
+        # @last_month_comment = mock Comment
+        # @this_month_comment.stub!(:date).and_return(Time.now)
+        # @last_month_comment.stub!(:date).and_return('2009/10/10')
+        # 
+        # @this_month_topic = mock Topic
+        # @mixed_month_topic = mock Topic
+        # @last_month_topic = mock Topic
+        # 
+        # @this_month_topic.stub!(:comment).and_return([@this_month_comment, @this_month_comment])
+        # @mixed_month_topic.stub!(:comment).and_return([@last_month_comment, @this_month_comment])
+        # @last_month_topic.stub!(:comment).and_return([@last_month_comment, @last_month_comment])
       end
-
-      it "should show ok in Feb" do
-        Time.stub!(:now).and_return(Time.parse('2009/2/10'))
-        Summary.new.last_month.should == "200901"
-      end
-
-      it "should show ok in Nov" do
-        Time.stub!(:now).and_return(Time.parse('2009/11/10'))
-        Summary.new.last_month.should == "200910"
+      
+      it "should cover only this month" do
+        @page_one = mock Page
+        @page_two = mock Page
+        @page_three = mock Page
+        @page_four = mock Page
+        
+        @page_one.stub!(:topic).and_return([@this_month_topic, @this_month_topic, @this_month_topic])
+        @page_two.stub!(:topic).and_return([@this_month_topic, @mixed_month_topic, @last_month_topic])
+        @page_three.stub!(:topic).and_return([@last_month_topic, @last_month_topic, @last_month_topic])
+        @page_four.stub!(:topic).and_return([@last_month_topic, @last_month_topic, @last_month_topic])
+        
       end
     end
-  end
+    
   
   describe "PageCopy" do
     describe "URL" do
