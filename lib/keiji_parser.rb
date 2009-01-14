@@ -56,6 +56,7 @@ class Message
       @user =   NKF.nkf("-w", element.search('tr')[@name_and_date_position].inner_text).slice(/名前：(.*) 日付/, 1).gsub(/\?/,"").strip
       @date = JPDate.parse(NKF.nkf("-w", element.search('tr')[@name_and_date_position].inner_text).slice(/日付：(.*$)/, 1))
       @photos = element.search('a[@href]').map{|a| a.attributes['href']}.find_all{|a| a.match(/jpg$/)}.map{|a| Photo.new(a)}
+      @photos.each{|photo| photo.fetch}
     end
   end
 end
@@ -69,15 +70,17 @@ class Photo
   end
   
   def fetch
-    p "SITE: #{SITE}"
     [@url, @thumbnail_url].each do |url|
       
       file_path = File.dirname(url)
       file_name = File.basename(url)
-      unless Dir.glob(OUTDIR + file_name) == [OUTDIR + file_name]
+      p "fetching SITE: #{file_name}"
+      
+      unless Dir.glob("../" + OUTDIR + file_name) == ["../" + OUTDIR + file_name]
+
         Net::HTTP.start(SITE) { |http|
           resp = http.get(url)
-          open(OUTDIR + file_name, "wb") { |file|
+          open("../" + OUTDIR + file_name, "wb") { |file|
             file.write(resp.body)
            }
         }
@@ -106,7 +109,16 @@ class Topic < Message
     element.search("a[@href]").each do |e| 
       url =  e.attributes['href'] 
       e.set_attribute(:href, 'http://' + SITE + url ) if url.match(/^\/cgi/)
+      e.set_attribute(:href, File.basename(url) ) if url.match(/^\/33\/fujiwara/)
     end
+    
+    element.search("img[@src]").each do |e| 
+      img =  e.attributes['src'] 
+      e.set_attribute(:src, File.basename(img) ) if img.match(/^\/33\/fujiwara\/img/)
+      p img
+      e.set_attribute(:src, "./images/" + File.basename(img) ) if img.match(/^\/images\/icon/)
+    end
+    
     @element = element
 
     @comments =  element.search('table')[2..-1].map{|comment_element| Comment.new(comment_element)}

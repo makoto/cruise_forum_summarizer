@@ -35,8 +35,8 @@ duration_in_month.times do |num|
           <a href="#{next_month(topics, index)}.html">次へ</a>
         </td>
         <td align="right" width="40%">
-          <a href="../index.html">トップへ</a>＞
-          <a href="../#{summary.this_month}.html">#{summary.now.year}年#{summary.now.month}月</a>
+          <a href="index.html">トップへ</a>＞
+          <a href="#{summary.this_month}.html">#{summary.now.year}年#{summary.now.month}月</a>
         </td>
       </tr>
     </tbody>
