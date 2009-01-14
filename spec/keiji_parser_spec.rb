@@ -250,21 +250,6 @@ describe "KeijiParser" do
       end
     end
     
-  
-  describe "PageCopy" do
-    describe "URL" do
-      it "should change url of reply" do
-        pending
-        "/cgi/reply?id=fujiwara&amp;dd=33&amp;re=5960"
-        SITE + "/cgi/reply?id=fujiwara&amp;dd=33&amp;re=5960"
-      end
-
-      it "should change directory of images" do
-        pending
-        '<a href="/33/fujiwara/img/1230984583_1.jpg" target="_blank">'
-      end
-    end
-    
     describe "Header" do
       it "should not have previous page link if this is first page" do
         
@@ -279,6 +264,5 @@ describe "KeijiParser" do
       end
     end
     
-  end
   
 end

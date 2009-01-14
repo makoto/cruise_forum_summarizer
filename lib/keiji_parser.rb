@@ -87,7 +87,7 @@ class Photo
 end
 
 class Topic < Message
-  attr_reader :comments, :url
+  attr_reader :comments, :url, :element
 
   def initialize(element)
     @name_and_date_position = 2
@@ -101,7 +101,14 @@ class Topic < Message
     if @context.empty? # This is because an topic with an icon has extra table
       @context =  NKF.nkf("-w", (element.search('table')[2].search('td')[0..1].inner_html))
     end
-    
+
+    # Replacing relative path to fqdn
+    element.search("a[@href]").each do |e| 
+      url =  e.attributes['href'] 
+      e.set_attribute(:href, 'http://' + SITE + url ) if url.match(/^\/cgi/)
+    end
+    @element = element
+
     @comments =  element.search('table')[2..-1].map{|comment_element| Comment.new(comment_element)}
   end
 end
@@ -120,7 +127,7 @@ class Comment < Message
 end
 
 class Summary
-  attr_reader :now
+  attr_reader :now, :topics
   def initialize(params)
     @now = params[:date]
     @page_num = params[:page_num]
@@ -144,13 +151,13 @@ class Summary
   end
   
   def generate
-    topics = []
+    @topics = []
     
     loop  do
       html = open("http://www3.ezbbs.net/cgi/bbs?id=fujiwara&dd=33&p=#{@page_num}")
       page =  Page.new(html)
       this_month_topic = page.topics.find_all{|t| t.date.month == @now.month || t.comments.find_all{|c| c.date }.last.date.month == @now.month}
-      topics = topics + this_month_topic
+      @topics = @topics + this_month_topic
       p "#{@page_num},#{this_month_topic.size}, #{page.topics.size}"
 
       if this_month_topic.size == page.topics.size
@@ -195,7 +202,7 @@ class Summary
       file.write header
       file.write  "<tr><th>id</th><th>title</th><th>user</th><th>date</th><th>comments</th><th>last comments date</th></tr>"
     
-      topics.each do |t| 
+      @topics.each do |t| 
         file.write  "<tr>\n"
         # p "topic"
         file.write  "<td>"
@@ -223,6 +230,4 @@ class Summary
     
     @page_num
   end
-  
-  
 end
