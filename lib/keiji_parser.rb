@@ -243,3 +243,17 @@ class Summary
     @page_num
   end
 end
+
+class Icon
+  def self.fetch
+    18.times do | n |
+      num = sprintf("%.2d", n + 1)
+      Net::HTTP.start(SITE) { |http|
+        resp = http.get("/images/icon#{num}.gif")
+        open("icon#{num}.gif", "w") { |file|
+          file.write(resp.body)
+         }
+      }
+    end
+  end
+end

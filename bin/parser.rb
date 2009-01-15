@@ -4,6 +4,7 @@ pages = []
 
 page_num = 0
 duration_in_month = 2
+# duration_in_month = 1
 
 def prev_month(topics, index)
   topics[index - 1].thread_id unless index == 0
@@ -44,7 +45,7 @@ duration_in_month.times do |num|
     EOF
     
     File.open("../" + OUTDIR + "#{topic.thread_id}.html", "w") { |file|
-     file.write header
+     file.write NKF.nkf("-s", header)
      file.write topic.element.to_html
     }
     
