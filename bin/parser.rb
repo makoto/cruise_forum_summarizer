@@ -45,8 +45,20 @@ duration_in_month.times do |num|
     EOF
     
     File.open("../" + OUTDIR + "#{topic.thread_id}.html", "w") { |file|
+     file.write <<-EOF
+     <html>
+     <head>
+       <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS" />
+       <title>#{topic.thread_id}</title>
+     </head>
+     <body>
+     EOF
      file.write NKF.nkf("-Ws -m0 --cp932", header)
      file.write topic.element.to_html
+     file.write <<-EOF
+     </body>
+     </html>
+     EOF
     }
     
   end

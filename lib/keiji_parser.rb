@@ -228,8 +228,7 @@ class Summary
       <table border='1'>
       EOF
       file.write NKF.nkf("-Ws -m0 --cp932", header)
-      file.write  "<tr><th>title</th><th>user</th><th>date</th><th>comments</th><th>last comments date</th></tr>"
-    
+      file.write  NKF.nkf("-Ws -m0 --cp932", "<tr><th>タイトル</th><th>投稿者</th><th>投稿日</th><th>コメント数</th><th>最終コメント投稿日</th></tr>")
       @topics.each do |t| 
         file.write  "<tr>\n"
         # p "topic"
