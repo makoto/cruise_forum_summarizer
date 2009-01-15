@@ -1,3 +1,5 @@
+# $KCODE="SJIS"
+
 require 'rubygems'
 require 'hpricot'
 require 'nkf'
@@ -9,11 +11,16 @@ SITE = "www3.ezbbs.net"
 OUTDIR = "data/output/"
 
 class JPDate
+  
   def self.parse(str)
-    month = str.slice(/(.*)月(.*)日/, 1)
-    day = str.slice(/(.*)月(.*)日/, 2)
-    hour =  str.slice(/(.*)月(.*)日.* (\d*)時(\d*)分/, 3)
-    min =  str.slice(/(.*)月(.*)日.* (\d*)時(\d*)分/, 4)
+    tsuki = NKF.nkf("-Ws -m0 --cp932", "月")
+    nichi = NKF.nkf("-Ws -m0 --cp932", "日")
+    ji = NKF.nkf("-Ws -m0 --cp932", "時")
+    fun = NKF.nkf("-Ws -m0 --cp932", "分")
+    month = str.slice(/(.*)#{tsuki}(.*)#{nichi}.* (\d*)#{ji}(\d*)#{fun}/s, 1)
+    day = str.slice(/(.*)#{tsuki}(.*)#{nichi}.* (\d*)#{ji}(\d*)#{fun}/s, 2)
+    hour =  str.slice(/(.*)#{tsuki}(.*)#{nichi}.* (\d*)#{ji}(\d*)#{fun}/s, 3)
+    min =  str.slice(/(.*)#{tsuki}(.*)#{nichi}.* (\d*)#{ji}(\d*)#{fun}/s, 4)
     
     this_year = Time.now.year
     year = this_year
@@ -28,9 +35,10 @@ class JPDate
   
   def self.generate(time)
     one_week  = ['日','月','火','水','木','金','土']
+    one_week = one_week.map{|day| NKF.nkf("-Ws -m0 --cp932", day)}
     if time.respond_to?(:wday)
       week_day = one_week[time.wday]
-      time.strftime("%Y年%m月%d日(#{week_day}) %H時%M分")
+      NKF.nkf("-Ws -m0 --cp932", time.strftime("%Y年%m月%d日(#{week_day}) %H時%M分"))
     end
   end
 end
@@ -51,12 +59,20 @@ class Message
   def initialize(element)
     input = element.search('input[@name=del]').first
     if input
+      name = NKF.nkf("-Ws -m0 --cp932", "名前")
+      date = NKF.nkf("-Ws -m0 --cp932", "日付")
+      colong = NKF.nkf("-Ws -m0 --cp932", "：")
+      period = NKF.nkf("-Ws -m0 --cp932", "．")
       @thread_id = input.attributes['value']
-      @title =  NKF.nkf("-w", input.parent.inner_text).delete(@thread_id + "．")
-      @user =   NKF.nkf("-w", element.search('tr')[@name_and_date_position].inner_text).slice(/名前：(.*) 日付/, 1).gsub(/\?/,"").strip
-      @date = JPDate.parse(NKF.nkf("-w", element.search('tr')[@name_and_date_position].inner_text).slice(/日付：(.*$)/, 1))
+      @title =  input.parent.inner_text.gsub(/#{@thread_id}#{colong}/,"")
+      # @title =  input.parent.inner_text.delete(@thread_id + period)
+      # @user =   element.search('tr')[@name_and_date_position].inner_text.slice(/名前：(.*) 日付/, 1).gsub(/\?/,"").strip
+      # @date = JPDate.parse(element.search('tr')[@name_and_date_position].inner_text.slice(/日付：(.*$)/, 1))
+      @date = JPDate.parse(element.search('tr')[@name_and_date_position].inner_text.slice(/#{date}#{colong}(.*$)/s, 1))
+      @user =   element.search('tr')[@name_and_date_position].inner_text.slice(/#{name}#{colong}(.*)#{date}/s, 1).gsub(/\?/,"").strip
+      
       @photos = element.search('a[@href]').map{|a| a.attributes['href']}.find_all{|a| a.match(/jpg$/)}.map{|a| Photo.new(a)}
-      @photos.each{|photo| photo.fetch}
+      # @photos.each{|photo| photo.fetch}
     end
   end
 end
@@ -99,10 +115,10 @@ class Topic < Message
     context_lines = element.search('table')[1].search('td')[0..1].inner_html.split("\n")
     contexts = []
     context_lines.each{|c| break if c.match(/<table/); contexts << c}
-    @context = NKF.nkf("-w", contexts.join("\n"))
+    @context = contexts.join("\n")
     @url = "/cgi/reply?id=fujiwara&dd=33&re=#{thread_id}"
     if @context.empty? # This is because an topic with an icon has extra table
-      @context =  NKF.nkf("-w", (element.search('table')[2].search('td')[0..1].inner_html))
+      @context =  element.search('table')[2].search('td')[0..1].inner_html
     end
 
     # Replacing relative path to fqdn
@@ -133,7 +149,7 @@ class Comment < Message
     super(element)
     # To skip duplicate comment errro for comment with icons
     if @thread_id
-      @context = NKF.nkf("-w", element.search('tr')[2].search('td')[0].inner_html).strip
+      @context = element.search('tr')[2].search('td')[0].inner_html.strip
     end
   end
 end
@@ -183,7 +199,7 @@ class Summary
       header = <<-EOF
       <html>
       <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS" />
         <title>#{@now.year}年#{@now.month}月　クルーズファンの情報ボックス</title>
       </head><body>
       <table align="center" bgcolor="#ffffff" border="0" cellpadding="5" width="800">
@@ -211,15 +227,15 @@ class Summary
       </table>
       <table border='1'>
       EOF
-      file.write header
-      file.write  "<tr><th>id</th><th>title</th><th>user</th><th>date</th><th>comments</th><th>last comments date</th></tr>"
+      file.write NKF.nkf("-Ws -m0 --cp932", header)
+      file.write  "<tr><th>title</th><th>user</th><th>date</th><th>comments</th><th>last comments date</th></tr>"
     
       @topics.each do |t| 
         file.write  "<tr>\n"
         # p "topic"
         file.write  "<td>"
-        file.write  t.thread_id 
-        file.write  "</td><td>"
+        # file.write  t.thread_id 
+        # file.write  "</td><td>"
         file.write  "<a href ='#{t.thread_id}.html' >"
         file.write  t.title 
         file.write  "</a>"

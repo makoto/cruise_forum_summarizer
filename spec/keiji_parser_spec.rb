@@ -1,4 +1,4 @@
-$KCODE="UTF8"
+# $KCODE="SJIS"
 
 require 'spec'
 require 'hpricot'
@@ -74,7 +74,7 @@ describe "KeijiParser" do
       </table>
     EOF
     
-    @page = Page.new(html)
+    @page = Page.new(NKF.nkf("-s",html))
     @topic = @page.topics.first
     @comment = @topic.comments.first
   end
@@ -94,7 +94,7 @@ describe "KeijiParser" do
     end
     
     it "should have title" do
-      @topic.title.should == "にっぽん丸クリスマスのショウ"
+      @topic.title.should == NKF.nkf("-s","にっぽん丸クリスマスのショウ")
     end
     
     it "should have url" do
@@ -102,7 +102,7 @@ describe "KeijiParser" do
     end
     
     it "should have date" do
-      JPDate.generate(@topic.date).should == "2009年01月04日(日) 06時37分"
+      JPDate.generate(@topic.date).should == NKF.nkf("-s","2009年01月04日(日) 06時37分")
     end
     
     it "should have name" do
@@ -110,7 +110,7 @@ describe "KeijiParser" do
     end
 
     it "should have context" do
-      @topic.context.should == (<<-EOF
+      @topic.context.should == NKF.nkf("-s",(<<-EOF
 
               <a href="/33/fujiwara/img/1230984583_1.jpg" target="_blank">
               <img src="/33/fujiwara/img/1230984583_1s.jpg" border="1" height="179" alt="Original Size: 610 x 457, 114KB" width="240" /></a>
@@ -124,7 +124,7 @@ describe "KeijiParser" do
                 <a href="http://ya170519su.at.webry.info/%20" target="_blank">http://ya170519su.at.webry.info/ </a>
               </p>
       EOF
-      ).rstrip
+      ).rstrip)
     end
     
     it "should have photo urls" do
@@ -159,11 +159,11 @@ describe "KeijiParser" do
     end
 
     it "should have thread date" do
-      JPDate.generate(@comment.date).should == "2009年01月03日(土) 21時11分"
+      JPDate.generate(@comment.date).should == NKF.nkf("-s","2009年01月03日(土) 21時11分")
     end
     
     it "should have thread context" do
-      @comment.context.should == '<font color="#000000">すみません。<br />間違って、別スレを立ててしまいました。<br /><br />ＰＶさんの続きです。</font>'
+      @comment.context.should == NKF.nkf("-s",'<font color="#000000">すみません。<br />間違って、別スレを立ててしまいました。<br /><br />ＰＶさんの続きです。</font>')
     end
   end
   
@@ -173,21 +173,21 @@ describe "KeijiParser" do
     
     describe "parse" do
       it "should handle 2 digits min and hour" do
-        JPDate.parse("12月27日(土) 10時31分").to_s.should == "Sat Dec 27 10:31:00 +0000 2008"
+        JPDate.parse(NKF.nkf("-s", "12月27日(土) 10時31分")).to_s.should == "Sat Dec 27 10:31:00 +0000 2008"
       end
       it "should handle 1 digit min and hour" do
-        JPDate.parse("12月27日(土) 1時3分").to_s.should == "Sat Dec 27 01:03:00 +0000 2008"
+        JPDate.parse(NKF.nkf("-s", "12月27日(土) 1時3分")).to_s.should == "Sat Dec 27 01:03:00 +0000 2008"
       end
 
       it "should handle this year" do
         Time.stub!(:now).and_return(Time.parse('2009/1/10'))
-        JPDate.parse("1月2日(土) 1時3分").to_s.should == "Fri Jan 02 01:03:00 +0000 2009"
+        JPDate.parse(NKF.nkf("-s", "1月2日(土) 1時3分")).to_s.should == "Fri Jan 02 01:03:00 +0000 2009"
       end
     end
     
     describe "generate" do
       it "should generate dates in Japanese" do
-        JPDate.generate(Time.parse('2009/1/10 13:03')).should == "2009年01月10日(土) 13時03分"
+        JPDate.generate(Time.parse('2009/1/10 13:03')).should == NKF.nkf("-s", "2009年01月10日(土) 13時03分")
       end
     end
   end

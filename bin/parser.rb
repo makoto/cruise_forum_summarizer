@@ -1,4 +1,4 @@
-$KCODE='UTF8'
+# $KCODE='SJIS'
 require '../lib/keiji_parser'
 pages = []
 
@@ -45,7 +45,7 @@ duration_in_month.times do |num|
     EOF
     
     File.open("../" + OUTDIR + "#{topic.thread_id}.html", "w") { |file|
-     file.write NKF.nkf("-s", header)
+     file.write NKF.nkf("-Ws -m0 --cp932", header)
      file.write topic.element.to_html
     }
     
