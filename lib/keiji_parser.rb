@@ -71,8 +71,8 @@ class Message
       @date = JPDate.parse(element.search('tr')[@name_and_date_position].inner_text.slice(/#{date}#{colong}(.*$)/s, 1))
       @user =   element.search('tr')[@name_and_date_position].inner_text.slice(/#{name}#{colong}(.*)#{date}/s, 1).gsub(/\?/,"").strip
       
-      @photos = element.search('a[@href]').map{|a| a.attributes['href']}.find_all{|a| a.match(/jpg$/)}.map{|a| Photo.new(a)}
-      # @photos.each{|photo| photo.fetch}
+      @photos = element.search('a[@href]').map{|a| a.attributes['href']}.find_all{|a| a.match(/jpg$|JPG$|gif$|GIF$|png$|PNG$/)}.map{|a| Photo.new(a)}
+      @photos.each{|photo| photo.fetch}
     end
   end
 end
@@ -82,7 +82,7 @@ class Photo
   def initialize(url)
     @site
     @url = url
-    @thumbnail_url = @url.sub(/.jpg/, "s.jpg")
+    @thumbnail_url = @url.sub(/\./, "s.")
   end
   
   def fetch
