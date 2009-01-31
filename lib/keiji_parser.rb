@@ -228,6 +228,8 @@ class Summary
       EOF
       file.write NKF.nkf("-Ws -m0 --cp932", header)
       file.write  NKF.nkf("-Ws -m0 --cp932", "<tr><th>タイトル</th><th>投稿者</th><th>投稿日</th><th>コメント数</th><th>最終コメント投稿日</th></tr>")
+      # Sorted by thread_number
+      @topics = @topics.sort_by{|t| t.thread_id.to_i }
       @topics.each do |t| 
         file.write  "<tr>\n"
         # p "topic"
