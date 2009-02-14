@@ -6,6 +6,7 @@ require 'nkf'
 require 'time'
 require 'net/http'
 require 'open-uri'
+require 'ruby-debug'
 
 SITE = "www3.ezbbs.net"
 OUTDIR = "data/output/"
@@ -183,7 +184,10 @@ class Summary
     loop  do
       html = open("http://www3.ezbbs.net/cgi/bbs?id=fujiwara&dd=33&p=#{@page_num}")
       page =  Page.new(html)
-      this_month_topic = page.topics.find_all{|t| t.date.month == @now.month || t.comments.find_all{|c| c.date }.last.date.month == @now.month}
+      this_month_topic = page.topics.find_all do |t|
+        last_comment = t.comments.find_all {|c| c && c.date }.last 
+        (t && t.date.month == @now.month) || (last_comment && last_comment.date.month == @now.month)
+      end
       @topics = @topics + this_month_topic
       p "#{@page_num},#{this_month_topic.size}, #{page.topics.size}"
 
